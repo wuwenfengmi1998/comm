@@ -41,7 +41,7 @@ int chack_str(char *a,const char *b)
 }
 
 
-//通过空格分离第一个命令  返回1分离成功
+//通过空格分离第一个命令  返回1分离成功 
 int com_cut(char *r_buff,char *com)
 {
     if (*r_buff == ' ' || *r_buff == '\0')
