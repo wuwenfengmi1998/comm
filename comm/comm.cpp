@@ -8,8 +8,9 @@
 typedef struct
 {
     unsigned int user_id;
-    char file_dir[64];
-    int comm_filg;
+    char file_dir[256];   //如果打开了文件或者路径 保存在这里
+    char R_buff[128];     //用户占用一个接受器并且有接受缓存
+    char com[64];         //分离出来的命令
 
 }user;
 
@@ -40,48 +41,14 @@ int chack_str(char *a,const char *b)
 }
 
 
-
-int com_cut(char *com,char *com_a,char *com_b)
+//通过空格分离第一个命令  返回1分离成功
+int com_cut(char *r_buff,char *com)
 {
-    char flag = 0;
-    char* backup;
-    backup = com_a;
-    while (*backup != '\0')
+    if (*r_buff == ' ' || *r_buff == '\0')
     {
-        *backup = '\0';
-        backup++;
+        return 0;
     }
-    backup = com_b;
-    while (*backup != '\0')
-    {
-        *backup = '\0';
-        backup++;
-    }
-    while (*com != '0')
-    {
-        if (*com == ' '&&flag==0)
-        {
-            flag = 1;
-            com++;
-        }
-        else
-        {
-            if (flag == 0)
-            {
-                *com_a = *com;
-                com_a++;
-                *com_a = '\0';
-            }
-            else
-            {
-                *com_b = *com;
-                com_b++;
-                *com_b = '\0';
-            }
-        }
-
-        com++;
-    }
+    return 1;
 }
 
 const char fast[2][8] =
@@ -97,26 +64,27 @@ int main()
 
     sprintf(i.file_dir,"/");//初始化用户根目录
 
-    char com[128];
-    char com_a[28];
-    char com_b[100];
+    
+
 
     while (1)
     {
         printf("%s ", i.file_dir);
 
-        scanf("%s", com);
-        //printf("%s",com);
-        if (chack_str(com, "exit"))
+        scanf("%s", i.R_buff);
+        if (chack_str(i.R_buff, "exit"))
         {
             exit(0);
         }
-        if (chack_str(com, "help"))
+        if (chack_str(i.R_buff, "help"))
         {
 
         }
-        com_cut(com,com_a,com_b);
-        printf("%s\n%s\n%s\n",com,com_a,com_b);
+        if (com_cut(i.R_buff, i.com))
+        {
+            printf("%s\n%s\n", i.R_buff, i.com);
+        }
+       
 
         
     }
