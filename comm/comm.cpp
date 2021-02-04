@@ -44,10 +44,28 @@ int chack_str(char *a,const char *b)
 //通过空格分离第一个命令  返回1分离成功 
 int com_cut(char *r_buff,char *com)
 {
-    if (*r_buff == ' ' || *r_buff == '\0')
+    int i=0;
+    if (*r_buff == ' ')
     {
+        printf("error1\n");
         return 0;
+        
     }
+
+    while (*r_buff!=' ')
+    {
+        if (*r_buff == '\0')
+        {
+            printf("error2\n");
+            return 0;
+        }
+        *com = *r_buff;
+        com++;
+        r_buff++;
+        i++;
+    }
+    *com = '\0';
+
     return 1;
 }
 
@@ -57,6 +75,22 @@ const char fast[2][8] =
     "display"
 };
 
+
+void GetString(char* p, int p_len)
+{
+    char c;
+    int i = 0;
+    while ((c = getchar()) != '\n') {
+        if (i < p_len) {
+            p[i] = c;
+            i++;
+        }
+        else {
+            break;
+        }
+    }
+    p[i] = '\0';
+}
 
 int main()
 {
@@ -71,7 +105,7 @@ int main()
     {
         printf("%s ", i.file_dir);
 
-        scanf("%s", i.R_buff);
+        GetString(i.R_buff,128);
         if (chack_str(i.R_buff, "exit"))
         {
             exit(0);
